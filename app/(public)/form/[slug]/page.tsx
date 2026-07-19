@@ -12,7 +12,7 @@ export default async function FormDetailPage({ params }: { params: Promise<{ slu
   const { data: form } = await supabase
     .from("forms")
     .select("*, agency:agencies(*)")
-    .eq("slug", params.slug)
+    .eq("slug", slug)
     .eq("status", "published")
     .maybeSingle();
 
