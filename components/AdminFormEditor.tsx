@@ -30,12 +30,35 @@ export default function AdminFormEditor({ agencies, categories }: { agencies: Ag
   const [fee, setFee] = useState("Free");
   const [submissionOffice, setSubmissionOffice] = useState("");
   const [fileUrl, setFileUrl] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
   const [referenceCode, setReferenceCode] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setSaving(true);
     setError(null);
+
+    let uploadedUrl = fileUrl;
+
+    if (file) {
+      setUploading(true);
+      const path = `${slugify(title)}-${Date.now()}.pdf`;
+      const { error: uploadError } = await supabase.storage.from("forms").upload(path, file, {
+        contentType: "application/pdf",
+        upsert: false,
+      });
+      setUploading(false);
+
+      if (uploadError) {
+        setError(`File upload failed: ${uploadError.message}`);
+        return;
+      }
+
+      const { data: publicUrl } = supabase.storage.from("forms").getPublicUrl(path);
+      uploadedUrl = publicUrl.publicUrl;
+    }
+
+    setSaving(true);
 
     const { error } = await supabase.from("forms").insert({
       title,
@@ -49,7 +72,7 @@ export default function AdminFormEditor({ agencies, categories }: { agencies: Ag
       processing_time: processingTime,
       fee,
       submission_office: submissionOffice,
-      file_url: fileUrl || null,
+      file_url: uploadedUrl || null,
       reference_code: referenceCode || null,
       status: "draft",
       version: "v1.0",
@@ -124,8 +147,18 @@ export default function AdminFormEditor({ agencies, categories }: { agencies: Ag
         </Field>
       </div>
 
-      <Field label="File URL (PDF, hosted in Supabase Storage or elsewhere)">
-        <input value={fileUrl} onChange={(e) => setFileUrl(e.target.value)} className="input" placeholder="https://…" />
+      <Field label="Form PDF">
+        <input
+          type="file"
+          accept="application/pdf"
+          onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+          className="input"
+        />
+        {file && <p className="text-xs text-inksoft mt-1">Selected: {file.name}</p>}
+      </Field>
+
+      <Field label="Or paste a file URL instead (skip if uploading above)">
+        <input value={fileUrl} onChange={(e) => setFileUrl(e.target.value)} className="input" placeholder="https://…" disabled={!!file} />
       </Field>
 
       <p className="text-xs text-inksoft">
@@ -134,10 +167,10 @@ export default function AdminFormEditor({ agencies, categories }: { agencies: Ag
 
       <button
         type="submit"
-        disabled={saving}
+        disabled={saving || uploading}
         className="bg-green hover:bg-greendeep text-white font-semibold rounded-lg px-5 py-2.5 text-sm disabled:opacity-50"
       >
-        {saving ? "Saving…" : "Save as draft"}
+        {uploading ? "Uploading PDF…" : saving ? "Saving…" : "Save as draft"}
       </button>
 
       <style jsx>{`

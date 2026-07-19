@@ -27,7 +27,7 @@ export default async function SearchPage({
         categories={(categories ?? []) as Category[]}
         initialQuery={params.q ?? ""}
         initialCategory={params.cat ?? null}
-       />
+      />
     </>
   );
 }

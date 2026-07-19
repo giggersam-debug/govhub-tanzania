@@ -26,10 +26,12 @@ content site instead of a subscription SaaS.
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    - `SUPABASE_SERVICE_ROLE_KEY`
 
-3. **Run the schema**, then the seed data, in Supabase's SQL editor:
+3. **Run the schema**, then the seed data, then storage setup, in Supabase's SQL editor:
    - `supabase/schema.sql` — tables, RLS policies, starter categories
    - `supabase/seed.sql` — the same 13 agencies and 20 forms used in the design
      prototype, so the real app and the prototype match
+   - `supabase/storage.sql` — creates the public `forms` bucket for hosting PDFs,
+     with RLS so only admin/editor can upload
 
 4. **Promote yourself to admin.** Sign up once through `/login` (Supabase's default
    sign-up flow, or add a `/signup` page), then in the SQL editor:
@@ -59,9 +61,9 @@ supabase/            → schema.sql + seed.sql
 
 ## Not yet built (next phases, per the Phase docs)
 
-- File upload to Supabase Storage for form PDFs (the admin form editor currently takes
-  a `file_url` — wire this to Storage next)
 - Phase 2: payment integration for forms with government fees
 - Phase 3: AI Government Assistant (the `AssistantWidget` shell from Fedha Tracker is a
   natural starting point for this)
 - Signup page (only login is scaffolded — add `/signup` using the same Supabase pattern)
+- Editing an existing form (the admin editor currently only creates new forms — an
+  edit page would reuse the same `AdminFormEditor` component, pre-filled)
