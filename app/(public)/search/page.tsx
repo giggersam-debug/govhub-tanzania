@@ -6,8 +6,9 @@ import type { Agency, Category } from "@/lib/types";
 export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: { q?: string; cat?: string };
+  searchParams: Promise<{ q?: string; cat?: string }>;
 }) {
+  const params = await searchParams;
   const supabase = await createClient();
   const [{ data: agencies }, { data: categories }] = await Promise.all([
     supabase.from("agencies").select("*").eq("status", "active").order("code"),
