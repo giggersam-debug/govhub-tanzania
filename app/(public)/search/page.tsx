@@ -25,9 +25,9 @@ export default async function SearchPage({
       <SearchResults
         agencies={(agencies ?? []) as Agency[]}
         categories={(categories ?? []) as Category[]}
-        initialQuery={searchParams.q ?? ""}
-        initialCategory={searchParams.cat ?? null}
-      />
+        initialQuery={params.q ?? ""}
+        initialCategory={params.cat ?? null}
+       />
     </>
   );
 }
