@@ -11,7 +11,7 @@ export default async function AgencyPage({ params }: { params: Promise<{ code: s
   const { data: agency } = await supabase
     .from("agencies")
     .select("*")
-    .eq("code", params.code.toUpperCase())
+    .eq("code", code.toUpperCase())
     .eq("status", "active")
     .maybeSingle();
 
