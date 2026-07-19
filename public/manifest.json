@@ -1,0 +1,15 @@
+{
+  "name": "GovHub Tanzania",
+  "short_name": "GovHub",
+  "description": "Search, understand, and download official Tanzanian government forms.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F3F6EF",
+  "theme_color": "#0B6E4F",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

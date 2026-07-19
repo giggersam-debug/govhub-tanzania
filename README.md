@@ -56,8 +56,23 @@ app/
   admin/            → gated Admin Portal: dashboard, forms, agencies, categories, analytics
 components/          → shared UI (public + admin)
 lib/                 → Supabase clients + shared types
-supabase/            → schema.sql + seed.sql
+supabase/            → schema.sql + seed.sql + storage.sql
 ```
+
+## PWA
+
+GovHub is installable as a Progressive Web App, using the same `@ducanh2912/next-pwa`
+setup as Fedha Tracker. `public/manifest.json` and the two app icons
+(`icon-192.png`, `icon-512.png`, `icon-maskable-512.png`) define the install prompt
+and home-screen appearance.
+
+- The service worker only builds in **production** (`npm run build && npm run start`,
+  or on Vercel) — it's disabled in `next dev` to avoid stale-cache confusion while
+  developing.
+- On a deployed site, visiting on mobile Chrome/Safari should offer "Add to Home
+  Screen"; desktop Chrome shows an install icon in the address bar.
+- `public/sw.js` and `public/workbox-*.js` are generated at build time — they're
+  gitignored and regenerate on every deploy, so don't edit or commit them directly.
 
 ## Not yet built (next phases, per the Phase docs)
 
