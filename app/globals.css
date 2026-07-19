@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #F3F6EF;
+  color: #1B1F1C;
+  font-family: 'Work Sans', sans-serif;
+}
+
+/* Perforated "tear" divider — GovHub's signature motif, used between the
+   hero and the stats strip on the homepage. Same trick as Fedha's
+   .stripe-accent: a small reusable utility class instead of inline styles. */
+.tear {
+  height: 22px;
+  background-image: radial-gradient(circle at 11px 11px, #F3F6EF 6px, transparent 6.5px);
+  background-size: 22px 22px;
+  background-repeat: repeat-x;
+  background-position: center;
+}
