@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabaseServer";
+import { getDictionary } from "@/lib/getLang";
 import SearchBar from "@/components/SearchBar";
 import AgencyCard from "@/components/AgencyCard";
 import FormRow from "@/components/FormRow";
@@ -9,6 +10,7 @@ const POPULAR_SEARCHES = ["Passport", "TIN Registration", "Birth Certificate", "
 
 export default async function HomePage() {
   const supabase = await createClient();
+  const { lang, t } = await getDictionary();
 
   const [{ data: agencies }, { data: categories }, { data: recentForms }, { data: allPublished }] = await Promise.all([
     supabase.from("agencies").select("*").eq("status", "active").order("code").limit(8),
@@ -37,23 +39,17 @@ export default async function HomePage() {
         <div className="max-w-[1140px] mx-auto px-6">
           <span className="inline-flex items-center gap-2 font-mono text-xs tracking-[0.14em] uppercase text-greendeep bg-green/10 border border-green/25 px-3 py-1.5 rounded-full">
             <span className="w-1.5 h-1.5 rounded-full bg-golddeep" />
-            Rasmi · Official Forms Portal
+            {t.heroEyebrow}
           </span>
           <h1 className="font-display font-semibold text-[44px] leading-[1.08] mt-5 mb-1.5 max-w-[15ch]">
-            Every official form. One trusted place.
+            {t.heroTitle}
           </h1>
-          <div className="font-display font-semibold text-greendeep text-lg mb-4">
-            Kila fomu rasmi, sehemu moja.
-          </div>
-          <p className="text-inksoft text-[16.5px] max-w-[52ch] mb-7">
-            Search, understand, and download the correct government form the first time — with clear
-            requirements, fees, and where to submit it.
-          </p>
+          <p className="text-inksoft text-[16.5px] max-w-[52ch] mb-7">{t.heroLede}</p>
 
-          <SearchBar />
+          <SearchBar placeholder={t.searchPlaceholder} buttonLabel={t.searchButton} />
 
           <div className="flex flex-wrap gap-2.5 items-center mt-4 mb-11">
-            <span className="text-xs text-inksoft mr-0.5">Popular:</span>
+            <span className="text-xs text-inksoft mr-0.5">{t.popularLabel}</span>
             {POPULAR_SEARCHES.map((p) => (
               <Link
                 key={p}
@@ -67,17 +63,17 @@ export default async function HomePage() {
         </div>
         <div className="tear" />
         <div className="max-w-[1140px] mx-auto px-6 py-5 flex justify-between flex-wrap gap-2.5 font-mono text-[13px] text-inksoft">
-          <span><b className="text-greendeep text-[15px]">{agencyList.length}</b> agencies covered</span>
-          <span><b className="text-greendeep text-[15px]">{formCount ?? 0}+</b> official forms</span>
-          <span>Sourced directly from official agency releases</span>
+          <span><b className="text-greendeep text-[15px]">{agencyList.length}</b> {t.statsAgencies}</span>
+          <span><b className="text-greendeep text-[15px]">{formCount ?? 0}+</b> {t.statsForms}</span>
+          <span>{t.statsSourced}</span>
         </div>
       </div>
 
       <section className="max-w-[1140px] mx-auto px-6 py-11">
         <div className="flex items-baseline justify-between mb-5 flex-wrap gap-4">
-          <h2 className="font-display text-2xl">Browse by agency</h2>
+          <h2 className="font-display text-2xl">{t.browseByAgency}</h2>
           <Link href="/agencies" className="text-[13.5px] font-semibold text-greendeep hover:underline">
-            All agencies →
+            {t.allAgenciesLink}
           </Link>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5">
@@ -88,7 +84,7 @@ export default async function HomePage() {
       </section>
 
       <section className="max-w-[1140px] mx-auto px-6 py-11">
-        <h2 className="font-display text-2xl mb-5">Browse by category</h2>
+        <h2 className="font-display text-2xl mb-5">{t.browseByCategory}</h2>
         <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
           {categoryList.map((c) => (
             <Link
@@ -104,18 +100,16 @@ export default async function HomePage() {
 
       <section className="max-w-[1140px] mx-auto px-6 py-11">
         <div className="flex items-baseline justify-between mb-5 flex-wrap gap-4">
-          <h2 className="font-display text-2xl">Recently updated</h2>
+          <h2 className="font-display text-2xl">{t.recentlyUpdated}</h2>
           <Link href="/search" className="text-[13.5px] font-semibold text-greendeep hover:underline">
-            View all →
+            {t.viewAll}
           </Link>
         </div>
         <div className="flex flex-col gap-2.5">
           {recent.length ? (
-            recent.map((f) => <FormRow key={f.id} form={f} agencyCode={f.agency.code} />)
+            recent.map((f) => <FormRow key={f.id} form={f} agencyCode={f.agency.code} lang={lang} />)
           ) : (
-            <p className="text-inksoft text-sm">
-              No forms published yet — add some from the Admin Portal.
-            </p>
+            <p className="text-inksoft text-sm">{t.noFormsYet}</p>
           )}
         </div>
       </section>

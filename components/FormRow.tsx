@@ -1,7 +1,17 @@
 import Link from "next/link";
+import { dictionaries, type Lang } from "@/lib/i18n";
 import type { GovForm } from "@/lib/types";
 
-export default function FormRow({ form, agencyCode }: { form: GovForm; agencyCode: string }) {
+export default function FormRow({
+  form,
+  agencyCode,
+  lang = "en",
+}: {
+  form: GovForm;
+  agencyCode: string;
+  lang?: Lang;
+}) {
+  const t = dictionaries[lang];
   const recentlyUpdated =
     Date.now() - new Date(form.last_updated).getTime() < 1000 * 60 * 60 * 24 * 14; // 14 days
 
@@ -18,7 +28,7 @@ export default function FormRow({ form, agencyCode }: { form: GovForm; agencyCod
         {recentlyUpdated && <span className="ml-2 text-[11px] font-mono text-rust">● updated</span>}
       </span>
       <span className="text-[11.5px] text-inksoft font-mono whitespace-nowrap">
-        {form.fee === "Free" ? "Free" : "Fee applies"} · {form.processing_time}
+        {form.fee === "Free" ? t.free : t.feeApplies} · {form.processing_time}
       </span>
     </Link>
   );

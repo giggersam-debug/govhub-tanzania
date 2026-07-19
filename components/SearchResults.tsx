@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabaseClient";
+import { dictionaries, type Lang } from "@/lib/i18n";
 import FormRow from "@/components/FormRow";
 import StampBadge from "@/components/StampBadge";
 import type { Agency, Category, GovForm } from "@/lib/types";
@@ -11,12 +12,15 @@ export default function SearchResults({
   categories,
   initialQuery,
   initialCategory,
+  lang,
 }: {
   agencies: Agency[];
   categories: Category[];
   initialQuery: string;
   initialCategory: string | null;
+  lang: Lang;
 }) {
+  const t = dictionaries[lang];
   const supabase = useMemo(() => createClient(), []);
   const [query, setQuery] = useState(initialQuery);
   const [inputValue, setInputValue] = useState(initialQuery);
@@ -67,6 +71,10 @@ export default function SearchResults({
     });
   }
 
+  const resultsLabel = loading
+    ? t.searching
+    : `${results.length} ${results.length === 1 ? t.resultsWord : t.resultsWordPlural}${query ? ` ${t.forWord} “${query}”` : ""}`;
+
   return (
     <>
       <div className="max-w-[1140px] mx-auto px-6 pt-3.5">
@@ -80,20 +88,20 @@ export default function SearchResults({
           <input
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Search for a form…"
+            placeholder={t.searchPlaceholder}
             autoComplete="off"
             className="flex-1 border-none outline-none text-[15.5px] px-3.5 py-3 bg-transparent"
           />
           <button type="submit" className="bg-green hover:bg-greendeep text-white rounded-xl px-6 font-semibold text-sm">
-            Search
+            {t.searchButton}
           </button>
         </form>
       </div>
 
       <div className="max-w-[1140px] mx-auto px-6 grid grid-cols-1 md:grid-cols-[220px_1fr] gap-7 py-7 pb-16">
         <aside className="bg-paper border border-line rounded-card p-4 h-fit sticky top-[82px]">
-          <h4 className="text-xs uppercase tracking-wide text-inksoft mb-2.5 font-semibold">Category</h4>
-          <FilterRadio label="All categories" checked={!activeCategory} onChange={() => setActiveCategory(null)} />
+          <h4 className="text-xs uppercase tracking-wide text-inksoft mb-2.5 font-semibold">{t.category}</h4>
+          <FilterRadio label={t.allCategories} checked={!activeCategory} onChange={() => setActiveCategory(null)} />
           {categories.map((c) => (
             <FilterRadio
               key={c.id}
@@ -103,7 +111,7 @@ export default function SearchResults({
             />
           ))}
 
-          <h4 className="text-xs uppercase tracking-wide text-inksoft mt-4.5 mb-2.5 font-semibold">Agency</h4>
+          <h4 className="text-xs uppercase tracking-wide text-inksoft mt-4.5 mb-2.5 font-semibold">{t.agency}</h4>
           {agencies.map((a) => (
             <label key={a.code} className="flex items-center gap-2 text-[13.5px] py-1">
               <input type="checkbox" checked={agencyFilter.has(a.code)} onChange={() => toggleAgency(a.code)} />
@@ -113,21 +121,19 @@ export default function SearchResults({
         </aside>
 
         <div>
-          <div className="text-[13.5px] text-inksoft mb-3.5">
-            {loading ? "Searching…" : `${results.length} result${results.length === 1 ? "" : "s"}${query ? ` for “${query}”` : ""}`}
-          </div>
+          <div className="text-[13.5px] text-inksoft mb-3.5">{resultsLabel}</div>
           <div className="flex flex-col gap-2.5">
             {!loading && results.length === 0 && (
               <div className="text-center py-14 px-5 text-inksoft">
                 <div className="w-16 mx-auto mb-4">
                   <StampBadge color="#B94A1F" label="–" size={64} />
                 </div>
-                <div className="font-semibold mb-1.5">No forms matched that search</div>
-                <div className="text-[13.5px]">Try a different keyword, or browse by agency instead.</div>
+                <div className="font-semibold mb-1.5">{t.noResultsTitle}</div>
+                <div className="text-[13.5px]">{t.noResultsSubtitle}</div>
               </div>
             )}
             {results.map((f) => (
-              <FormRow key={f.id} form={f} agencyCode={agencyByCode[f.agency?.code]?.code ?? f.agency.code} />
+              <FormRow key={f.id} form={f} agencyCode={agencyByCode[f.agency?.code]?.code ?? f.agency.code} lang={lang} />
             ))}
           </div>
         </div>

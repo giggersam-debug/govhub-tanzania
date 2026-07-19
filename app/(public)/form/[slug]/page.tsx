@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabaseServer";
+import { getDictionary } from "@/lib/getLang";
 import Breadcrumb from "@/components/Breadcrumb";
 import StampBadge from "@/components/StampBadge";
 import DownloadCard from "@/components/DownloadCard";
@@ -8,6 +9,7 @@ import type { Agency, GovForm } from "@/lib/types";
 export default async function FormDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const supabase = await createClient();
+  const { lang, t } = await getDictionary();
 
   const { data: form } = await supabase
     .from("forms")
@@ -21,18 +23,18 @@ export default async function FormDetailPage({ params }: { params: Promise<{ slu
   const f = form as GovForm & { agency: Agency };
 
   const steps = [
-    "Gather the required documents listed below.",
-    `Download and complete ${f.title}.`,
-    `Submit at: ${f.submission_office ?? "the relevant office"}.`,
-    "Pay the fee if applicable, and keep your receipt.",
-    `Track processing — typical time is ${f.processing_time ?? "varies by office"}.`,
+    t.stepGather,
+    t.stepDownload(f.title),
+    t.stepSubmit(f.submission_office ?? t.relevantOffice),
+    t.stepPay,
+    t.stepTrack(f.processing_time ?? t.variesByOffice),
   ];
 
   return (
     <>
       <div className="max-w-[1140px] mx-auto px-6">
         <div className="pt-4.5">
-          <Breadcrumb items={[["Home", "/"], [f.agency.code, `/agency/${f.agency.code}`], [f.title, null]]} />
+          <Breadcrumb items={[[t.breadcrumbHome, "/"], [f.agency.code, `/agency/${f.agency.code}`], [f.title, null]]} />
         </div>
         <div className="flex justify-between items-start gap-5 flex-wrap py-5">
           <div>
@@ -45,11 +47,11 @@ export default async function FormDetailPage({ params }: { params: Promise<{ slu
 
       <div className="max-w-[1140px] mx-auto px-6 grid grid-cols-1 md:grid-cols-[1fr_320px] gap-7 items-start pb-16">
         <div>
-          <Panel title="Description"><p>{f.description}</p></Panel>
-          {f.purpose && <Panel title="Purpose"><p>{f.purpose}</p></Panel>}
-          {f.eligibility && <Panel title="Eligibility"><p>{f.eligibility}</p></Panel>}
+          <Panel title={t.description}><p>{f.description}</p></Panel>
+          {f.purpose && <Panel title={t.purpose}><p>{f.purpose}</p></Panel>}
+          {f.eligibility && <Panel title={t.eligibility}><p>{f.eligibility}</p></Panel>}
           {f.requirements?.length > 0 && (
-            <Panel title="Requirements">
+            <Panel title={t.requirements}>
               <ul className="list-disc pl-4.5 space-y-1.5">
                 {f.requirements.map((r) => (
                   <li key={r}>{r}</li>
@@ -57,7 +59,7 @@ export default async function FormDetailPage({ params }: { params: Promise<{ slu
               </ul>
             </Panel>
           )}
-          <Panel title="How to apply">
+          <Panel title={t.howToApply}>
             <div>
               {steps.map((s, i) => (
                 <div key={s} className={`flex gap-3 py-2.5 ${i > 0 ? "border-t border-dashed border-line" : ""}`}>
@@ -71,7 +73,7 @@ export default async function FormDetailPage({ params }: { params: Promise<{ slu
           </Panel>
         </div>
 
-        <DownloadCard form={f} />
+        <DownloadCard form={f} lang={lang} />
       </div>
     </>
   );

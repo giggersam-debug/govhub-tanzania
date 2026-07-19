@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense, useState } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabaseClient";
 
@@ -69,10 +70,17 @@ function LoginForm() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-green text-white font-semibold rounded-lg py-2.5 text-sm hover:bg-greendeep disabled:opacity-50"
+          className="w-full bg-green text-white font-semibold rounded-lg py-2.5 text-sm hover:bg-greendeep disabled:opacity-50 mb-4"
         >
           {loading ? "Logging in…" : "Log in"}
         </button>
+
+        <p className="text-xs text-inksoft text-center">
+          Don't have an account?{" "}
+          <Link href="/signup" className="font-semibold text-greendeep hover:underline">
+            Sign up
+          </Link>
+        </p>
       </form>
     </div>
   );

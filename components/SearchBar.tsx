@@ -3,7 +3,15 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function SearchBar({ initialValue = "" }: { initialValue?: string }) {
+export default function SearchBar({
+  initialValue = "",
+  placeholder = "Search for a form — TIN, Passport, Business License…",
+  buttonLabel = "Search",
+}: {
+  initialValue?: string;
+  placeholder?: string;
+  buttonLabel?: string;
+}) {
   const [value, setValue] = useState(initialValue);
   const router = useRouter();
 
@@ -18,7 +26,7 @@ export default function SearchBar({ initialValue = "" }: { initialValue?: string
         type="text"
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        placeholder="Search for a form — TIN, Passport, Business License…"
+        placeholder={placeholder}
         autoComplete="off"
         className="flex-1 border-none outline-none text-[15.5px] px-3.5 py-3 bg-transparent"
       />
@@ -26,7 +34,7 @@ export default function SearchBar({ initialValue = "" }: { initialValue?: string
         type="submit"
         className="bg-green hover:bg-greendeep text-white rounded-xl px-6 font-semibold text-sm"
       >
-        Search
+        {buttonLabel}
       </button>
     </form>
   );

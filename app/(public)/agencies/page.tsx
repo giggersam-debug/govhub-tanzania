@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabaseServer";
+import { getDictionary } from "@/lib/getLang";
 import AgencyCard from "@/components/AgencyCard";
 import Breadcrumb from "@/components/Breadcrumb";
 import type { Agency } from "@/lib/types";
@@ -7,6 +8,7 @@ export const metadata = { title: "Agencies — GovHub Tanzania" };
 
 export default async function AgenciesPage() {
   const supabase = await createClient();
+  const { t } = await getDictionary();
   const [{ data: agencies }, { data: forms }] = await Promise.all([
     supabase.from("agencies").select("*").eq("status", "active").order("code"),
     supabase.from("forms").select("agency_id").eq("status", "published"),
@@ -22,10 +24,10 @@ export default async function AgenciesPage() {
     <>
       <div className="bg-greentint border-b border-line py-6">
         <div className="max-w-[1140px] mx-auto px-6">
-          <Breadcrumb items={[["Home", "/"], ["Agencies", null]]} />
-          <h1 className="font-display text-[26px] mt-2.5">Government agencies</h1>
+          <Breadcrumb items={[[t.breadcrumbHome, "/"], [t.breadcrumbAgencies, null]]} />
+          <h1 className="font-display text-[26px] mt-2.5">{t.govAgenciesTitle}</h1>
           <p className="text-inksoft text-sm mt-1.5">
-            {agencyList.length} agencies publish forms through GovHub Tanzania.
+            {agencyList.length} {t.agenciesCountSuffix}
           </p>
         </div>
       </div>

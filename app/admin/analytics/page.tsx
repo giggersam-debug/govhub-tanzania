@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabaseServer";
+import AdminPageHeader from "@/components/AdminPageHeader";
 import AnalyticsCharts from "@/components/AnalyticsCharts";
 
 export default async function AdminAnalyticsPage() {
@@ -14,7 +15,7 @@ export default async function AdminAnalyticsPage() {
 
   return (
     <div>
-      <h1 className="font-display text-2xl mb-6">Analytics</h1>
+      <AdminPageHeader icon="📈" title="Analytics" subtitle="Download activity over the last 14 days" />
       <AnalyticsCharts downloads={downloads ?? []} />
     </div>
   );

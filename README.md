@@ -79,6 +79,5 @@ and home-screen appearance.
 - Phase 2: payment integration for forms with government fees
 - Phase 3: AI Government Assistant (the `AssistantWidget` shell from Fedha Tracker is a
   natural starting point for this)
-- Signup page (only login is scaffolded — add `/signup` using the same Supabase pattern)
 - Editing an existing form (the admin editor currently only creates new forms — an
   edit page would reuse the same `AdminFormEditor` component, pre-filled)

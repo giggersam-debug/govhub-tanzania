@@ -1,23 +1,23 @@
 import Link from "next/link";
+import { getDictionary } from "@/lib/getLang";
 
-export default function SiteFooter() {
+export default async function SiteFooter() {
+  const { t } = await getDictionary();
+
   return (
     <footer className="bg-greendeep text-white/80 mt-10 pt-11 pb-8">
       <div className="max-w-[1140px] mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-6">
         <div>
           <h4 className="font-display text-white text-sm mb-3">GovHub Tanzania</h4>
-          <p className="text-[13px] leading-relaxed max-w-[38ch] text-white/70">
-            An independent directory of official Tanzanian government forms — built to save citizens and
-            businesses a trip to the counter. Not a government agency.
-          </p>
+          <p className="text-[13px] leading-relaxed max-w-[38ch] text-white/70">{t.footerTagline}</p>
         </div>
-        <FooterCol title="Browse" links={[["Agencies", "/agencies"], ["All forms", "/search"]]} />
-        <FooterCol title="Account" links={[["Saved forms", "/login"], ["Download history", "/login"]]} />
-        <FooterCol title="Support" links={[["Help centre", "/"], ["Contact", "/"]]} />
+        <FooterCol title={t.footerBrowse} links={[[t.footerAgencies, "/agencies"], [t.footerAllForms, "/search"]]} />
+        <FooterCol title={t.footerAccount} links={[[t.footerSavedForms, "/login"], [t.footerDownloadHistory, "/login"]]} />
+        <FooterCol title={t.footerSupport} links={[[t.footerHelpCentre, "/"], [t.footerContact, "/"]]} />
       </div>
       <div className="max-w-[1140px] mx-auto px-6 mt-8 pt-5 border-t border-white/15 flex justify-between flex-wrap gap-2 text-xs text-white/55">
-        <span>© 2026 GovHub Tanzania</span>
-        <span className="font-mono">Phase 1 · Forms Repository MVP</span>
+        <span>{t.footerCopyright}</span>
+        <span className="font-mono">{t.footerPhase}</span>
       </div>
     </footer>
   );

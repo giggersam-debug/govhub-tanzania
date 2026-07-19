@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabaseClient";
+import { dictionaries, type Lang } from "@/lib/i18n";
 import type { Agency, GovForm } from "@/lib/types";
 
-export default function DownloadCard({ form }: { form: GovForm & { agency: Agency } }) {
+export default function DownloadCard({ form, lang }: { form: GovForm & { agency: Agency }; lang: Lang }) {
+  const t = dictionaries[lang];
   const supabase = createClient();
   const [saved, setSaved] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
@@ -33,23 +35,23 @@ export default function DownloadCard({ form }: { form: GovForm & { agency: Agenc
 
   async function handleDownload() {
     await supabase.from("downloads").insert({ form_id: form.id, user_id: userId });
-    flash(`Download started — ${form.title}.pdf`);
+    flash(`${lang === "sw" ? "Upakuaji umeanza" : "Download started"} — ${form.title}.pdf`);
     if (form.file_url) window.open(form.file_url, "_blank");
   }
 
   async function handleSave() {
     if (!userId) {
-      flash("Log in to save forms to your favourites");
+      flash(lang === "sw" ? "Ingia ili kuhifadhi fomu kwenye vipendwa" : "Log in to save forms to your favourites");
       return;
     }
     if (saved) {
       await supabase.from("favorites").delete().eq("user_id", userId).eq("form_id", form.id);
       setSaved(false);
-      flash("Removed from saved forms");
+      flash(lang === "sw" ? "Imeondolewa kwenye fomu zilizohifadhiwa" : "Removed from saved forms");
     } else {
       await supabase.from("favorites").insert({ user_id: userId, form_id: form.id });
       setSaved(true);
-      flash("Saved to your favourites");
+      flash(lang === "sw" ? "Imehifadhiwa kwenye vipendwa vyako" : "Saved to your favourites");
     }
   }
 
@@ -62,7 +64,7 @@ export default function DownloadCard({ form }: { form: GovForm & { agency: Agenc
         <div>
           <div className="text-[13px] font-semibold">{form.title.replace(/\s+/g, "_")}.pdf</div>
           <div className="text-[11px] text-inksoft font-mono">
-            {form.version} · Updated {new Date(form.last_updated).toLocaleDateString()}
+            {form.version} · {new Date(form.last_updated).toLocaleDateString()}
           </div>
         </div>
       </div>
@@ -71,25 +73,25 @@ export default function DownloadCard({ form }: { form: GovForm & { agency: Agenc
         onClick={handleDownload}
         className="w-full bg-green hover:bg-greendeep text-white rounded-xl py-3 font-semibold text-[14.5px] mb-2 flex items-center justify-center gap-2"
       >
-        ⬇ Download PDF
+        ⬇ {t.downloadPdf}
       </button>
       <button className="w-full bg-paper border border-line hover:border-green rounded-xl py-2.5 font-semibold text-[13.5px] mb-2">
-        Print
+        {t.print}
       </button>
       <button
         onClick={handleSave}
         className="w-full bg-paper border border-line hover:border-green rounded-xl py-2.5 font-semibold text-[13.5px] mb-2"
       >
-        {saved ? "♥ Saved" : "♡ Save to favourites"}
+        {saved ? `♥ ${t.saved}` : `♡ ${t.saveToFavourites}`}
       </button>
 
       {message && <div className="text-xs text-center text-inksoft mt-1 mb-2">{message}</div>}
 
       <div className="grid grid-cols-2 gap-3.5 mt-4">
-        <Fact label="Processing time" value={form.processing_time ?? "—"} />
-        <Fact label="Fee" value={form.fee ?? "—"} />
-        <Fact label="Reference" value={form.reference_code ?? "—"} mono />
-        <Fact label="Submission" value={form.submission_office ?? "—"} small />
+        <Fact label={t.processingTime} value={form.processing_time ?? "—"} />
+        <Fact label={t.fee} value={form.fee ?? "—"} />
+        <Fact label={t.reference} value={form.reference_code ?? "—"} mono />
+        <Fact label={t.submission} value={form.submission_office ?? "—"} small />
       </div>
 
       <span
@@ -97,7 +99,7 @@ export default function DownloadCard({ form }: { form: GovForm & { agency: Agenc
           form.fee === "Free" ? "bg-greentint text-greendeep" : "bg-[#FBEFE3] text-golddeep"
         }`}
       >
-        {form.fee === "Free" ? "No fee required" : "Fee applies"}
+        {form.fee === "Free" ? t.noFeeRequired : t.feeApplies}
       </span>
     </div>
   );

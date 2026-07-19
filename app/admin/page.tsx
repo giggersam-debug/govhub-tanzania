@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabaseServer";
+import AdminPageHeader from "@/components/AdminPageHeader";
 
 export default async function AdminOverview() {
   const supabase = await createClient();
@@ -17,13 +18,15 @@ export default async function AdminOverview() {
 
   return (
     <div>
-      <h1 className="font-display text-2xl mb-6">Dashboard</h1>
+      <AdminPageHeader icon="📊" title="Dashboard" subtitle="An overview of GovHub's content and activity." />
+
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <StatCard label="Published forms" value={published ?? 0} />
-        <StatCard label="Draft forms" value={draft ?? 0} />
-        <StatCard label="Agencies" value={agencyCount ?? 0} />
-        <StatCard label="Downloads today" value={downloadsToday ?? 0} />
+        <StatCard icon="✅" label="Published forms" value={published ?? 0} accent="text-greendeep" />
+        <StatCard icon="📝" label="Draft forms" value={draft ?? 0} accent="text-golddeep" />
+        <StatCard icon="🏛️" label="Agencies" value={agencyCount ?? 0} accent="text-greendeep" />
+        <StatCard icon="⬇️" label="Downloads today" value={downloadsToday ?? 0} accent="text-greendeep" />
       </div>
+
       <div className="bg-paper border border-line rounded-card p-6">
         <h2 className="font-display text-lg mb-2">Total forms on file</h2>
         <p className="text-inksoft text-sm">
@@ -38,10 +41,13 @@ export default async function AdminOverview() {
   );
 }
 
-function StatCard({ label, value }: { label: string; value: number }) {
+function StatCard({ icon, label, value, accent }: { icon: string; label: string; value: number; accent: string }) {
   return (
-    <div className="bg-paper border border-line rounded-card p-4">
-      <div className="text-2xl font-display font-semibold text-greendeep">{value}</div>
+    <div className="bg-paper border border-line rounded-card p-4 hover:border-green/40 transition-colors">
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-lg">{icon}</span>
+      </div>
+      <div className={`text-2xl font-display font-semibold ${accent}`}>{value}</div>
       <div className="text-xs text-inksoft mt-1">{label}</div>
     </div>
   );

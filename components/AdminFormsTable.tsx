@@ -34,7 +34,7 @@ export default function AdminFormsTable({ initialForms }: { initialForms: (GovFo
         </thead>
         <tbody>
           {forms.map((f) => (
-            <tr key={f.id} className="border-t border-line">
+            <tr key={f.id} className="border-t border-line hover:bg-sage/60 transition-colors">
               <td className="px-4 py-3 font-medium">{f.title}</td>
               <td className="px-4 py-3 font-mono text-xs">{f.agency?.code}</td>
               <td className="px-4 py-3 font-mono text-xs">{f.version}</td>
@@ -65,8 +65,10 @@ export default function AdminFormsTable({ initialForms }: { initialForms: (GovFo
           ))}
           {forms.length === 0 && (
             <tr>
-              <td colSpan={6} className="px-4 py-8 text-center text-inksoft text-sm">
-                No forms uploaded yet.
+              <td colSpan={6} className="px-4 py-14 text-center">
+                <div className="text-3xl mb-2">📭</div>
+                <div className="text-sm font-semibold text-ink mb-1">No forms uploaded yet</div>
+                <div className="text-xs text-inksoft">Click "+ Upload form" above to add your first one.</div>
               </td>
             </tr>
           )}

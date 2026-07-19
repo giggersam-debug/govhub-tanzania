@@ -1,6 +1,10 @@
 import Link from "next/link";
+import { getDictionary } from "@/lib/getLang";
+import LanguageToggle from "@/components/LanguageToggle";
 
-export default function SiteHeader() {
+export default async function SiteHeader() {
+  const { lang, t } = await getDictionary();
+
   return (
     <header className="sticky top-0 z-40 bg-green text-white shadow-[0_2px_10px_rgba(6,67,47,0.25)]">
       <div className="max-w-[1140px] mx-auto px-6 h-[66px] flex items-center gap-7">
@@ -22,19 +26,17 @@ export default function SiteHeader() {
 
         <nav className="hidden md:flex gap-6 flex-1">
           <Link href="/" className="text-sm font-medium text-white/85 hover:text-white border-b-2 border-transparent hover:border-gold py-1.5">
-            Home
+            {t.navHome}
           </Link>
           <Link href="/agencies" className="text-sm font-medium text-white/85 hover:text-white border-b-2 border-transparent hover:border-gold py-1.5">
-            Agencies
+            {t.navAgencies}
           </Link>
           <Link href="/search" className="text-sm font-medium text-white/85 hover:text-white border-b-2 border-transparent hover:border-gold py-1.5">
-            All Forms
+            {t.navAllForms}
           </Link>
         </nav>
 
-        <span className="text-xs font-semibold border border-white/35 rounded-full px-2.5 py-1.5 tracking-wide">
-          EN · SW
-        </span>
+        <LanguageToggle lang={lang} />
       </div>
     </header>
   );

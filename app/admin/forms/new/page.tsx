@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabaseServer";
+import AdminPageHeader from "@/components/AdminPageHeader";
 import AdminFormEditor from "@/components/AdminFormEditor";
 import type { Agency, Category } from "@/lib/types";
 
@@ -11,7 +12,7 @@ export default async function NewFormPage() {
 
   return (
     <div>
-      <h1 className="font-display text-2xl mb-6">Upload a form</h1>
+      <AdminPageHeader icon="📤" title="Upload a form" subtitle="Saved as a draft — publish it once you've checked it." />
       <AdminFormEditor agencies={(agencies ?? []) as Agency[]} categories={(categories ?? []) as Category[]} />
     </div>
   );
