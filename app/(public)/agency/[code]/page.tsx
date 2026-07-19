@@ -4,7 +4,8 @@ import Breadcrumb from "@/components/Breadcrumb";
 import FormRow from "@/components/FormRow";
 import type { Agency, GovForm } from "@/lib/types";
 
-export default async function AgencyPage({ params }: { params: { code: string } }) {
+export default async function AgencyPage({ params }: { params: Promise<{ code: string }> }) {
+  const { code } = await params;
   const supabase = await createClient();
 
   const { data: agency } = await supabase

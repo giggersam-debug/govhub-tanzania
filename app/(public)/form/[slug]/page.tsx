@@ -5,7 +5,8 @@ import StampBadge from "@/components/StampBadge";
 import DownloadCard from "@/components/DownloadCard";
 import type { Agency, GovForm } from "@/lib/types";
 
-export default async function FormDetailPage({ params }: { params: { slug: string } }) {
+export default async function FormDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const supabase = await createClient();
 
   const { data: form } = await supabase
