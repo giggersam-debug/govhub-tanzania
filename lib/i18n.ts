@@ -76,6 +76,12 @@ export const dictionaries = {
     footerCopyright: "© 2026 GovHub Tanzania",
     footerPhase: "Phase 1 · Forms Repository MVP",
 
+    contactTitle: "Contact the agencies",
+    contactSubtitle: "Official phone, email, and office locations for every agency listed on GovHub Tanzania — kept up to date by our team.",
+    contactViewForms: "View forms →",
+    contactNoInfo: "Contact details not yet listed for this agency.",
+    breadcrumbContact: "Contact",
+
     stepGather: "Gather the required documents listed below.",
     stepDownload: (title: string) => `Download and complete ${title}.`,
     stepSubmit: (office: string) => `Submit at: ${office}.`,
@@ -158,6 +164,12 @@ export const dictionaries = {
     footerContact: "Wasiliana",
     footerCopyright: "© 2026 GovHub Tanzania",
     footerPhase: "Awamu ya 1 · Hazina ya Fomu MVP",
+
+    contactTitle: "Wasiliana na mashirika",
+    contactSubtitle: "Nambari za simu rasmi, barua pepe, na maeneo ya ofisi za kila shirika lililoorodheshwa GovHub Tanzania — yanasasishwa na timu yetu.",
+    contactViewForms: "Angalia fomu →",
+    contactNoInfo: "Maelezo ya mawasiliano bado hayajaorodheshwa kwa shirika hili.",
+    breadcrumbContact: "Wasiliana",
 
     stepGather: "Kusanya nyaraka zinazohitajika zilizoorodheshwa hapa chini.",
     stepDownload: (title: string) => `Pakua na ujaze ${title}.`,
