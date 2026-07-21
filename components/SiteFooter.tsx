@@ -13,7 +13,7 @@ export default async function SiteFooter() {
         </div>
         <FooterCol title={t.footerBrowse} links={[[t.footerAgencies, "/agencies"], [t.footerAllForms, "/search"]]} />
         <FooterCol title={t.footerAccount} links={[[t.footerSavedForms, "/login"], [t.footerDownloadHistory, "/login"]]} />
-        <FooterCol title={t.footerSupport} links={[[t.footerHelpCentre, "/"], [t.footerContact, "/contact"]]} />
+        <FooterCol title={t.footerSupport} links={[[t.footerHelpCentre, "/help"], [t.footerContact, "/contact"]]} />
       </div>
       <div className="max-w-[1140px] mx-auto px-6 mt-8 pt-5 border-t border-white/15 flex justify-between flex-wrap gap-2 text-xs text-white/55">
         <span>{t.footerCopyright}</span>

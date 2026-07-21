@@ -82,6 +82,13 @@ export const dictionaries = {
     contactNoInfo: "Contact details not yet listed for this agency.",
     breadcrumbContact: "Contact",
 
+    helpTitle: "Help centre",
+    helpSubtitle: "Answers to common questions about using GovHub Tanzania.",
+    breadcrumbHelp: "Help centre",
+    helpStillNeed: "Still need help?",
+    helpStillNeedBody: "If your question is about a specific agency or form, you can reach that agency directly.",
+    helpContactCta: "See agency contact details →",
+
     stepGather: "Gather the required documents listed below.",
     stepDownload: (title: string) => `Download and complete ${title}.`,
     stepSubmit: (office: string) => `Submit at: ${office}.`,
@@ -170,6 +177,13 @@ export const dictionaries = {
     contactViewForms: "Angalia fomu →",
     contactNoInfo: "Maelezo ya mawasiliano bado hayajaorodheshwa kwa shirika hili.",
     breadcrumbContact: "Wasiliana",
+
+    helpTitle: "Kituo cha msaada",
+    helpSubtitle: "Majibu ya maswali yanayoulizwa mara kwa mara kuhusu matumizi ya GovHub Tanzania.",
+    breadcrumbHelp: "Kituo cha msaada",
+    helpStillNeed: "Bado unahitaji msaada?",
+    helpStillNeedBody: "Ikiwa swali lako linahusu shirika au fomu maalum, unaweza kuwasiliana na shirika hilo moja kwa moja.",
+    helpContactCta: "Angalia maelezo ya mawasiliano ya mashirika →",
 
     stepGather: "Kusanya nyaraka zinazohitajika zilizoorodheshwa hapa chini.",
     stepDownload: (title: string) => `Pakua na ujaze ${title}.`,
